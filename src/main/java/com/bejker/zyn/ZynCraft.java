@@ -5,9 +5,17 @@ import com.bejker.zyn.network.ZynCraftPackets;
 import net.fabricmc.api.ModInitializer;
 
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.util.Identifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class ZynCraft implements ModInitializer {
 	public static final String MOD_ID = "zyncraft";
@@ -23,6 +31,14 @@ public class ZynCraft implements ModInitializer {
 		return Identifier.of(MOD_ID,id);
 	}
 
+	public static Set<Item> ZynabbleItems = new HashSet<>();
+
+	static{
+		ZynabbleItems.add(Items.GUNPOWDER);
+	}
+	public static boolean canBePlacedInZynSlot(ItemStack stack){
+		return ZynabbleItems.contains(stack.getItem());
+	}
 	@Override
 	public void onInitialize() {
 		// This code runs as soon as Minecraft is in a mod-load-ready state.

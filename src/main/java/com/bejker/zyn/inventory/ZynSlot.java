@@ -9,6 +9,8 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 
+import static com.bejker.zyn.ZynCraft.canBePlacedInZynSlot;
+
 public class ZynSlot extends Slot {
     public ZynSlot(Inventory inventory, int index, int x, int y) {
         super(inventory, index, x, y);
@@ -42,7 +44,7 @@ public class ZynSlot extends Slot {
 
     @Override
     public boolean canInsert(ItemStack stack) {
-        return true;
+        return canBePlacedInZynSlot(stack);
     }
 
     @Override
@@ -78,7 +80,7 @@ public class ZynSlot extends Slot {
 
     @Override
     public int getMaxItemCount() {
-        return this.inventory.getMaxCountPerStack();
+        return 1;
     }
 
     @Override
