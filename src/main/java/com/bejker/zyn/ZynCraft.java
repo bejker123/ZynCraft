@@ -1,5 +1,6 @@
 package com.bejker.zyn;
 
+import com.bejker.zyn.items.ZynCraftItems;
 import com.bejker.zyn.network.SyncInventoryPacket;
 import com.bejker.zyn.network.ZynCraftPackets;
 import net.fabricmc.api.ModInitializer;
@@ -13,8 +14,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 public class ZynCraft implements ModInitializer {
@@ -35,6 +34,7 @@ public class ZynCraft implements ModInitializer {
 
 	static{
 		ZynabbleItems.add(Items.GUNPOWDER);
+		ZynabbleItems.add(ZynCraftItems.ZYN);
 	}
 	public static boolean canBePlacedInZynSlot(ItemStack stack){
 		return ZynabbleItems.contains(stack.getItem());
@@ -44,6 +44,7 @@ public class ZynCraft implements ModInitializer {
 		// This code runs as soon as Minecraft is in a mod-load-ready state.
 		// However, some things (like resources) may still be uninitialized.
 		// Proceed with mild caution.
+		ZynCraftItems.initialize();
 		PayloadTypeRegistry.playS2C().register(ZynCraftPackets.SYNC_INVENTORY, SyncInventoryPacket.CODEC);
 	}
 }
