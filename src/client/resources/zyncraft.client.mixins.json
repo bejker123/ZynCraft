@@ -1,0 +1,15 @@
+{
+  "required": true,
+  "package": "com.bejker.zyn.mixin.client",
+  "compatibilityLevel": "JAVA_21",
+  "client": [
+    "HandledScreenMixin",
+    "InventoryScreenMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "mixins": [
+    "ScreenHandlerMixin"
+  ]
+}

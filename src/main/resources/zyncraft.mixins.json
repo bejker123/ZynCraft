@@ -1,0 +1,14 @@
+{
+  "required": true,
+  "package": "com.bejker.zyn.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [
+    "ExampleMixin",
+    "PlayerInventoryMixin",
+    "PlayerManagerMixin",
+    "PlayerScreenHandlerMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+	}
+}
