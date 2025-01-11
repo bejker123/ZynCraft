@@ -6,8 +6,8 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.util.Identifier;
 
-import static com.bejker.zyn.ZynInventory.SLOT_X;
-import static com.bejker.zyn.ZynInventory.SLOT_Y;
+import static com.bejker.zyn.inventory.ZynInventory.SLOT_X;
+import static com.bejker.zyn.inventory.ZynInventory.SLOT_Y;
 
 public class ZynScreenHandler {
     private static final Identifier SLOT_TEXTURE = Identifier.ofVanilla("container/slot/potioan");

@@ -1,5 +1,6 @@
 package com.bejker.zyn;
 
+import com.bejker.zyn.inventory.ZynInventory;
 import com.bejker.zyn.network.SyncInventoryPacket;
 import com.bejker.zyn.network.ZynCraftPackets;
 import net.fabricmc.api.ClientModInitializer;

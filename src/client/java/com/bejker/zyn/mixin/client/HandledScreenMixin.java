@@ -1,10 +1,8 @@
 package com.bejker.zyn.mixin.client;
 
-import com.bejker.zyn.ZynCraft;
 import com.bejker.zyn.ZynCraftClient;
-import com.bejker.zyn.ZynInventory;
-import com.bejker.zyn.ZynSlot;
-import com.llamalad7.mixinextras.sugar.Local;
+import com.bejker.zyn.inventory.ZynInventory;
+import com.bejker.zyn.inventory.ZynSlot;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.screen.slot.SlotActionType;

@@ -1,4 +1,4 @@
-package com.bejker.zyn;
+package com.bejker.zyn.inventory;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.slot.Slot;

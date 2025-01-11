@@ -1,4 +1,4 @@
-package com.bejker.zyn;
+package com.bejker.zyn.inventory;
 
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventory;

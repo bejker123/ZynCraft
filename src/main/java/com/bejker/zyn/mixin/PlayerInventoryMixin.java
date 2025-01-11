@@ -1,7 +1,7 @@
 package com.bejker.zyn.mixin;
 
-import com.bejker.zyn.ZynInventory;
-import com.bejker.zyn.ZynSlot;
+import com.bejker.zyn.inventory.ZynInventory;
+import com.bejker.zyn.inventory.ZynSlot;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventories;
