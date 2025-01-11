@@ -20,10 +20,6 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import java.util.Iterator;
-import java.util.List;
-
-import static com.bejker.zyn.ZynCraft.LOGGER;
 import static com.bejker.zyn.ZynCraft.ZYN_SLOT;
 
 @Mixin(PlayerInventory.class)
@@ -44,7 +40,6 @@ public class PlayerInventoryMixin implements ZynInventory {
     void init(PlayerEntity player, CallbackInfo ci){
         zyn_slot = new ZynSlot((Inventory) this, ZYN_SLOT,-16,7);
         zyn_slot.id = ZYN_SLOT;
-        LOGGER.info("Created zyn slot: {}, ID: {}", zyn_slot, zyn_slot.id);
         zyn = DefaultedList.ofSize(1,ItemStack.EMPTY);
     }
     @Inject(method = "removeStack(I)Lnet/minecraft/item/ItemStack;", cancellable = true,at=@At("HEAD"))
@@ -52,7 +47,7 @@ public class PlayerInventoryMixin implements ZynInventory {
         if(slot != ZYN_SLOT){
             return;
         }
-        if(zyn.getFirst() == ItemStack.EMPTY){
+        if(zyn.getFirst() == ItemStack.EMPTY||zyn.getFirst() == null){
             cir.setReturnValue(ItemStack.EMPTY);
             cir.cancel();
             return;
@@ -85,7 +80,6 @@ public class PlayerInventoryMixin implements ZynInventory {
             return;
         }
         zyn.set(0,stack);
-        LOGGER.info("{}",zyn_slot.getStack());
         cir.setReturnValue(false);
         cir.cancel();
     }
@@ -97,7 +91,6 @@ public class PlayerInventoryMixin implements ZynInventory {
         }
         zyn.set(0,stack);
         ci.cancel();
-
     }
 
     @Inject(method = "getStack", at = @At("HEAD"), cancellable = true)

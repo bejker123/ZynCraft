@@ -33,8 +33,7 @@ public class ZynCraftClient implements ClientModInitializer {
 			for (var i : payload.contentUpdates().entrySet()) {
 				int slot = i.getKey();
 				ItemStack stack = i.getValue();
-				inventory.removeStack(slot);
-				inventory.insertStack(slot, stack);
+				inventory.setStack(slot, stack);
 				//LOGGER.info("{}", player.getInventory().getStack(slot));
 			}
 			//for (var i : payload.inventoryUpdates().entrySet()){

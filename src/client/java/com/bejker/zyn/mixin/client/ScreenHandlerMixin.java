@@ -21,18 +21,14 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(ScreenHandler.class)
 public abstract class ScreenHandlerMixin {
 
-    @Shadow @Final public DefaultedList<Slot> slots;
-
     @Shadow protected abstract Slot addSlot(Slot slot);
 
     @Inject(method = "addPlayerSlots",at = @At("RETURN"))
     private void init(Inventory playerInventory, int left, int top, CallbackInfo ci){
         if(playerInventory != null){
-            ZynCraft.LOGGER.info("Pre adding zyn slot slots.size():{}",this.slots.size());
             ZynInventory inventory = (ZynInventory) playerInventory;
             Slot slot = inventory.zynCraft$getZynSlot();
             this.addSlot(slot);
-            ZynCraft.LOGGER.info("Added zyn slot, slots.size():{}",this.slots.size());
         }else{
             ZynCraft.LOGGER.info("Failed to add zyn slot.");
         }
