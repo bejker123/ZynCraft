@@ -3,6 +3,7 @@
   "package": "com.bejker.zyn.mixin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
+    "ItemMixin",
     "PlayerInventoryMixin",
     "PlayerManagerMixin",
     "PlayerScreenHandlerMixin"
