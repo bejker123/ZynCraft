@@ -11,11 +11,11 @@ import static com.bejker.zyn.inventory.ZynInventory.SLOT_Y;
 
 public class ZynScreenHandler {
     private static final Identifier SLOT_TEXTURE = Identifier.ofVanilla("container/slot/potioan");
-    public static void render(DrawContext context, int mouseX, int mouseY, float delta) {
+    public static void render(DrawContext context,int x,int y,int width,int height, int mouseX, int mouseY, float delta) {
         Screen screen = MinecraftClient.getInstance().currentScreen;
         assert screen != null;
-        int x = screen.width + SLOT_X;
-        int y = screen.height + SLOT_Y;
+        x = x - 16;
+        y = y + 7;
         context.drawGuiTexture(RenderLayer::getGuiTextured, SLOT_TEXTURE, x, y, 16, 16);
     }
 }

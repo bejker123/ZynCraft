@@ -1,8 +1,10 @@
 package com.bejker.zyn.mixin.client;
 
 import com.bejker.zyn.ZynCraftClient;
+import com.bejker.zyn.ZynScreenHandler;
 import com.bejker.zyn.inventory.ZynInventory;
 import com.bejker.zyn.inventory.ZynSlot;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.screen.slot.SlotActionType;
@@ -25,6 +27,13 @@ public abstract class HandledScreenMixin {
 
     @Shadow protected abstract void onMouseClick(Slot slot, int slotId, int button, SlotActionType actionType);
 
+    @Inject(method = "render", at = @At("HEAD"))
+    void render(DrawContext context, int mouseX, int mouseY, float delta, CallbackInfo ci){
+        int x = ((HandledScreen)((Object) this)).x;
+        int y = ((HandledScreen)((Object) this)).y;
+        ZynScreenHandler.render(context,x,y,this.backgroundWidth,this.backgroundHeight,mouseX,mouseY,delta);
+
+    }
     @Unique
     private boolean isInBounds(double mouseX, double mouseY){
         int x = this.backgroundWidth + ZynInventory.SLOT_X + 304;
