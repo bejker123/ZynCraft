@@ -115,7 +115,7 @@ public class ZynItem extends Item {
             //player.setAngles(world.random.nextFloat() + player.getYaw(),world.random.nextFloat() + player.getPitch());
             stack.damage(1,player);
             Integer attached = entity.getAttached(NICOTINE_CONTENT);
-            int amount = 1;
+            int amount = strength;
             if(attached != null&&attached != 0){
                 amount += attached;
             }
