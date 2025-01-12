@@ -3,13 +3,13 @@
 	"id": "zyncraft",
 	"version": "${version}",
 	"name": "ZynCraft",
-	"description": "This is an example description! Tell everyone what your mod is about!",
+	"description": "Now in more flavours!",
 	"authors": [
-		"Me!"
+		"bejker123"
 	],
 	"contact": {
-		"homepage": "https://fabricmc.net/",
-		"sources": "https://github.com/FabricMC/fabric-example-mod"
+		"homepage": "https://github.com/bejker123/ZynCraft",
+		"sources": "https://github.com/bejker123/ZynCraft"
 	},
 	"license": "MIT",
 	"icon": "assets/zyncraft/icon.png",
@@ -37,8 +37,5 @@
 		"minecraft": "~1.21.4",
 		"java": ">=21",
 		"fabric-api": "*"
-	},
-	"suggests": {
-		"another-mod": "*"
 	}
 }
