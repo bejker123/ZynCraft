@@ -54,7 +54,7 @@ public class PlayerEntityTicker {
                     if(!player.hasStatusEffect(StatusEffects.STRENGTH)) {
                         player.addStatusEffect(new StatusEffectInstance(StatusEffects.STRENGTH, 400, 1), player);
                     }
-                    if(interval >= 17){
+                    if(interval >= 7){
                         if(!player.hasStatusEffect(StatusEffects.NAUSEA)) {
                             player.addStatusEffect(new StatusEffectInstance(StatusEffects.NAUSEA, 400, 2), player);
                         }
