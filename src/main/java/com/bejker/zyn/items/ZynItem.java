@@ -5,6 +5,9 @@ import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.DynamicOps;
+import net.fabricmc.fabric.api.attachment.v1.AttachmentRegistry;
+import net.fabricmc.fabric.api.attachment.v1.AttachmentSyncPredicate;
+import net.fabricmc.fabric.api.attachment.v1.AttachmentType;
 import net.minecraft.component.ComponentType;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -12,6 +15,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.tooltip.TooltipType;
 import net.minecraft.nbt.NbtInt;
+import net.minecraft.network.codec.PacketCodecs;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.text.Text;
@@ -21,8 +25,6 @@ import net.minecraft.util.dynamic.Codecs;
 import net.minecraft.world.World;
 
 import java.util.List;
-import java.util.OptionalInt;
-import java.util.function.Supplier;
 
 import static com.bejker.zyn.items.ZynCraftItems.ZYN;
 import static com.bejker.zyn.items.ZynCraftItems.ZYN_KEY;
@@ -86,6 +88,14 @@ public class ZynItem extends Item {
         return ZYN.itemStackFrom(10,ZynType.CITRUS);
     }
 
+    public static final AttachmentType<Integer> NICOTINE_CONTENT = AttachmentRegistry.<Integer>create(
+            ZynCraft.id("nicotine_content"),
+            builder -> builder
+                    .initializer(() -> 0)
+                    .persistent(Codec.INT) // persist across restarts
+                    .syncWith(PacketCodecs.VAR_INT, AttachmentSyncPredicate.all()) // only the player's own client needs the value for rendering
+    );
+
     @Override
     public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
         if(slot != ZynCraft.ZYN_SLOT){
@@ -95,7 +105,6 @@ public class ZynItem extends Item {
         if(strength == null){
             return;
         }
-        ZynCraft.LOGGER.info("Zyn strength: {}",strength);
         int durability = stack.getDamage();
         if(durability == MAX_ZYN_DURABILITY){
             stack.setCount(0);
@@ -103,8 +112,14 @@ public class ZynItem extends Item {
         }
         //if(world.getTime() % 1 == 0){
         if(entity instanceof PlayerEntity player){
-            player.setAngles(world.random.nextFloat() + player.getYaw(),world.random.nextFloat() + player.getPitch());
+            //player.setAngles(world.random.nextFloat() + player.getYaw(),world.random.nextFloat() + player.getPitch());
             stack.damage(1,player);
+            Integer attached = entity.getAttached(NICOTINE_CONTENT);
+            int amount = 1;
+            if(attached != null&&attached != 0){
+                amount += attached;
+            }
+            entity.setAttached(NICOTINE_CONTENT,amount);
             //player.addStatusEffect(StatusEffectInstance.)
         }
         //}
