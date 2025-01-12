@@ -35,12 +35,19 @@ public class PlayerInventoryMixin implements ZynInventory {
     public DefaultedList<ItemStack> zyn;
     @Unique
     public Slot zyn_slot;
+    @Shadow
+    public int selectedSlot;
 
     @Inject(method = "<init>", at = @At("TAIL"))
     void init(PlayerEntity player, CallbackInfo ci){
         zyn_slot = new ZynSlot((Inventory) this, ZYN_SLOT,-16,7);
         zyn_slot.id = ZYN_SLOT;
         zyn = DefaultedList.ofSize(1,ItemStack.EMPTY);
+    }
+
+    @Inject(method = "updateItems", at = @At("TAIL"))
+    public void updateItems(CallbackInfo ci) {
+        zyn.getFirst().inventoryTick(this.player.getWorld(), this.player, zyn_slot.id, this.selectedSlot == zyn_slot.id);
     }
     @Inject(method = "removeStack(I)Lnet/minecraft/item/ItemStack;", cancellable = true,at=@At("HEAD"))
     void removeStack(int slot, CallbackInfoReturnable<ItemStack> cir){
