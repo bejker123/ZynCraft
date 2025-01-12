@@ -15,18 +15,18 @@ import net.minecraft.registry.Registry;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.ClickType;
-import net.minecraft.util.Colors;
-import net.minecraft.util.Hand;
+import net.minecraft.util.*;
 import net.minecraft.util.dynamic.Codecs;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 
 import java.util.List;
+import java.util.Objects;
 
 import static com.bejker.zyn.items.ZynCraftItems.ZYN;
 import static com.bejker.zyn.items.ZynCraftItems.ZYN_PACK_KEY;
+import static com.bejker.zyn.items.ZynItem.ZYN_STRENGTH;
+import static com.bejker.zyn.items.ZynItem.ZYN_TYPE;
 
 //TODO: add zyn type component!!!
 public class ZynPackItem extends Item {
@@ -39,7 +39,10 @@ public class ZynPackItem extends Item {
             .registryKey(ZYN_PACK_KEY)
             .useItemPrefixedTranslationKey()
             .maxCount(1)
-            .component(ZYN_AMOUNT_COMP,MAX_ZYN_AMOUNT);
+            .component(ZYN_AMOUNT_COMP,MAX_ZYN_AMOUNT)
+            .component(ZYN_STRENGTH,10)
+            .component(ZYN_TYPE, ZynItem.ZynType.CITRUS)
+            .rarity(Rarity.EPIC);
     public ZynPackItem(Settings settings) {
         super(settings);
     }
@@ -48,6 +51,8 @@ public class ZynPackItem extends Item {
     public ItemStack getDefaultStack() {
         ItemStack stack = super.getDefaultStack();
         stack.set(ZYN_AMOUNT_COMP,MAX_ZYN_AMOUNT);
+        stack.set(ZYN_STRENGTH,10);
+        stack.set(ZYN_TYPE, ZynItem.ZynType.CITRUS);
         return stack;
     }
 
@@ -57,6 +62,7 @@ public class ZynPackItem extends Item {
         if(amount == null){
             amount = 0;
         }
+        ZYN.appendTooltip(stack,context,tooltip,type);
         tooltip.add(Text.literal(amount+"/"+MAX_ZYN_AMOUNT).withColor(Colors.GRAY));
         super.appendTooltip(stack, context, tooltip, type);
         //for (var i : stack.getComponents()){
@@ -85,7 +91,7 @@ public class ZynPackItem extends Item {
         if(stack.getItem() != ZynCraftItems.ZYN_PACK){
            return ItemStack.EMPTY;
         }
-        return ZYN.getDefaultStack();
+        return ZYN.itemStackFrom(stack.getOrDefault(ZYN_STRENGTH,10),stack.get(ZYN_TYPE));
     }
     @Override
     public ActionResult use(World world, PlayerEntity user, Hand hand) {
@@ -108,15 +114,19 @@ public class ZynPackItem extends Item {
         return ActionResult.FAIL;
     }
 
+    public static boolean isTheSameZyn(ItemStack stack,ItemStack otherStack){
+        return stack.get(ZYN_TYPE) == otherStack.get(ZYN_TYPE)
+                && Objects.equals(stack.get(ZYN_STRENGTH), otherStack.get(ZYN_STRENGTH));
+    }
     @Override
     public boolean onClicked(ItemStack stack, ItemStack otherStack, Slot slot, ClickType clickType, PlayerEntity player, StackReference cursorStackReference) {
             Integer zyn_amount = stack.get(ZYN_AMOUNT_COMP);
-            if (zyn_amount == null) {
+            if (zyn_amount == null||otherStack.isDamaged()) {
                 return super.onClicked(stack, otherStack, slot, clickType, player, cursorStackReference);
             }
             if(!ZynCraft.canBePlacedInZynSlot(otherStack)){
                 if(otherStack.getItem() == Items.AIR &&clickType == ClickType.RIGHT&&zyn_amount > 0){
-                    ItemStack cursor_stack = ZYN.getDefaultStack();
+                    ItemStack cursor_stack = PackItemStackToZynItemStack(stack);
                     cursor_stack.setCount(1);
                     cursorStackReference.set(cursor_stack);
                     stack.set(ZYN_AMOUNT_COMP,zyn_amount - 1);
@@ -124,7 +134,7 @@ public class ZynPackItem extends Item {
                 }
                 return super.onClicked(stack, otherStack, slot, clickType, player, cursorStackReference);
             }
-            if (zyn_amount == MAX_ZYN_AMOUNT) {
+            if (zyn_amount == MAX_ZYN_AMOUNT||!isTheSameZyn(stack,otherStack)) {
                 return super.onClicked(stack, otherStack, slot, clickType, player, cursorStackReference);
             }
             if(clickType == ClickType.LEFT){
