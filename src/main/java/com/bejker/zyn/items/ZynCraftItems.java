@@ -17,6 +17,7 @@ public class ZynCraftItems {
 
     public static final Identifier ZYN_ID = ZynCraft.id("zyn");
     public static final RegistryKey<Item> ZYN_KEY = RegistryKey.of(RegistryKeys.ITEM,ZYN_ID);
+
     public static final Item ZYN = register(
             new ZynItem(ZynItem.ZynItemSettings),
             ZYN_ID
