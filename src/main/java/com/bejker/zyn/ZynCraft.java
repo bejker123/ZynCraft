@@ -33,7 +33,6 @@ public class ZynCraft implements ModInitializer {
 	public static Set<Item> ZynabbleItems = new HashSet<>();
 
 	static{
-		ZynabbleItems.add(Items.GUNPOWDER);
 		ZynabbleItems.add(ZynCraftItems.ZYN);
 	}
 	public static boolean canBePlacedInZynSlot(ItemStack stack){
