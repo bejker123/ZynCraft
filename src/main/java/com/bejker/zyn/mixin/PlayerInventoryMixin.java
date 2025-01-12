@@ -40,7 +40,7 @@ public class PlayerInventoryMixin implements ZynInventory {
 
     @Inject(method = "<init>", at = @At("TAIL"))
     void init(PlayerEntity player, CallbackInfo ci){
-        zyn_slot = new ZynSlot((Inventory) this, ZYN_SLOT,-16,7);
+        zyn_slot = new ZynSlot((Inventory) this, ZYN_SLOT,-18,7);
         zyn_slot.id = ZYN_SLOT;
         zyn = DefaultedList.ofSize(1,ItemStack.EMPTY);
     }
