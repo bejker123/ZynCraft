@@ -9,6 +9,9 @@
       - 2 interval Speed 2
       - 3 interval Strength 2
       - 7 interval Nausea
+- > The Zyn Slot
+    - A place for all your zyn needs.
+    - Simply right-click a zyn while holding it in your hand.
 ### Now in beta!
 **Expect many issues and bugs as well as incomplete features.**
 
