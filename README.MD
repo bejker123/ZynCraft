@@ -13,6 +13,6 @@
     - A place for all your zyn needs.
     - Simply right-click a zyn while holding it in your hand.
 ### Now in beta!
-**Expect many issues and bugs as well as incomplete features.**
+**Expect some issues and bugs as well as incomplete features.**
 
 **Please submit bugs on the [Issue Tracker](https://github.com/bejker123/ZynCraft/issues), avoid submitting duplicate issues.**
