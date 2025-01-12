@@ -33,6 +33,9 @@ public class ZynCraftItems {
 
     public static void initialize(){
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.INGREDIENTS)
-                .register((itemGroup) -> itemGroup.add(ZYN));
+                .register((itemGroup) -> {
+                    itemGroup.add(ZYN);
+                    itemGroup.add(ZYN_PACK);
+                });
     }
 }
