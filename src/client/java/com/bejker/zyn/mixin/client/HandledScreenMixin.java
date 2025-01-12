@@ -6,6 +6,7 @@ import com.bejker.zyn.inventory.ZynInventory;
 import com.bejker.zyn.inventory.ZynSlot;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
+import net.minecraft.client.render.RenderLayer;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.screen.slot.SlotActionType;
 import org.spongepowered.asm.mixin.Mixin;
@@ -27,11 +28,12 @@ public abstract class HandledScreenMixin {
 
     @Shadow protected abstract void onMouseClick(Slot slot, int slotId, int button, SlotActionType actionType);
 
-    @Inject(method = "render", at = @At("HEAD"))
+    @Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/ingame/HandledScreen;drawForeground(Lnet/minecraft/client/gui/DrawContext;II)V"))
     void render(DrawContext context, int mouseX, int mouseY, float delta, CallbackInfo ci){
+        Slot focused_slot = ((HandledScreen) ((Object) this)).focusedSlot;
         int x = ((HandledScreen)((Object) this)).x;
         int y = ((HandledScreen)((Object) this)).y;
-        ZynScreenHandler.render(context,x,y,this.backgroundWidth,this.backgroundHeight,mouseX,mouseY,delta);
+        ZynScreenHandler.render(context,focused_slot);
 
     }
     @Unique

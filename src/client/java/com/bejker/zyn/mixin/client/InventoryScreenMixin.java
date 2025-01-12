@@ -50,7 +50,7 @@ public class InventoryScreenMixin {
 
     }
 
-    @Inject(at = @At("RETURN"), method = "render")
+    @Inject(at = @At("HEAD"), method = "render")
     private void render(DrawContext context, int mouseX, int mouseY, float delta, CallbackInfo info) {
     }
     @Inject(at = @At("RETURN"), method = "drawBackground")
