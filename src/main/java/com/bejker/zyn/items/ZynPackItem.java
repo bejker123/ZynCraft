@@ -3,24 +3,35 @@ package com.bejker.zyn.items;
 import com.bejker.zyn.ZynCraft;
 import com.mojang.serialization.Codec;
 import net.minecraft.component.ComponentType;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.StackReference;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.item.tooltip.TooltipType;
 import net.minecraft.network.codec.PacketCodecs;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
+import net.minecraft.screen.slot.Slot;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.ClickType;
 import net.minecraft.util.Colors;
+import net.minecraft.util.Hand;
 import net.minecraft.util.dynamic.Codecs;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.World;
 
 import java.util.List;
 
+import static com.bejker.zyn.items.ZynCraftItems.ZYN;
 import static com.bejker.zyn.items.ZynCraftItems.ZYN_PACK_KEY;
 
+//TODO: add zyn type component!!!
 public class ZynPackItem extends Item {
     public static final ComponentType<Integer> ZYN_AMOUNT_COMP = Registry.register(Registries.DATA_COMPONENT_TYPE, ZynCraft.id("zyn_amount")
-            ,ComponentType.<Integer>builder().codec(Codecs.POSITIVE_INT).build());
+            ,ComponentType.<Integer>builder().codec(Codecs.NON_NEGATIVE_INT).build());
 
     public static final int MAX_ZYN_AMOUNT = 20;
 
@@ -67,5 +78,63 @@ public class ZynPackItem extends Item {
     public int getItemBarColor(ItemStack stack) {
         float f = Math.max(0.0F, ((float)stack.get(ZYN_AMOUNT_COMP)) / (float)MAX_ZYN_AMOUNT);
         return MathHelper.hsvToRgb(f / 3.0F, 1.0F, 1.0F);
+    }
+
+    public static ItemStack PackItemStackToZynItemStack(ItemStack stack){
+
+        if(stack.getItem() != ZynCraftItems.ZYN_PACK){
+           return ItemStack.EMPTY;
+        }
+        return ZYN.getDefaultStack();
+    }
+    @Override
+    public ActionResult use(World world, PlayerEntity user, Hand hand) {
+        if(user instanceof ServerPlayerEntity player){
+            ItemStack stack = user.getStackInHand(hand);
+            Integer zyn_amount = stack.get(ZYN_AMOUNT_COMP);
+            if(zyn_amount == null||zyn_amount <= 0){
+                return super.use(world, user, hand);
+            }
+            ItemStack zyn_stack = PackItemStackToZynItemStack(stack);
+            if(zyn_stack == ItemStack.EMPTY){
+                return super.use(world, user, hand);
+            }
+            int count = user.isSneaking()? Math.min(zyn_amount,MAX_ZYN_AMOUNT) : 1;
+            zyn_stack.setCount(count);
+            stack.set(ZYN_AMOUNT_COMP,zyn_amount - count);
+            player.giveOrDropStack(zyn_stack);
+            return ActionResult.SUCCESS;
+        }
+        return ActionResult.FAIL;
+    }
+
+    @Override
+    public boolean onClicked(ItemStack stack, ItemStack otherStack, Slot slot, ClickType clickType, PlayerEntity player, StackReference cursorStackReference) {
+            Integer zyn_amount = stack.get(ZYN_AMOUNT_COMP);
+            if (zyn_amount == null) {
+                return super.onClicked(stack, otherStack, slot, clickType, player, cursorStackReference);
+            }
+            if(!ZynCraft.canBePlacedInZynSlot(otherStack)){
+                if(otherStack.getItem() == Items.AIR &&clickType == ClickType.RIGHT&&zyn_amount > 0){
+                    ItemStack cursor_stack = ZYN.getDefaultStack();
+                    cursor_stack.setCount(1);
+                    cursorStackReference.set(cursor_stack);
+                    stack.set(ZYN_AMOUNT_COMP,zyn_amount - 1);
+                    return true;
+                }
+                return super.onClicked(stack, otherStack, slot, clickType, player, cursorStackReference);
+            }
+            if (zyn_amount == MAX_ZYN_AMOUNT) {
+                return super.onClicked(stack, otherStack, slot, clickType, player, cursorStackReference);
+            }
+            if(clickType == ClickType.LEFT){
+               int count = Math.min(zyn_amount + otherStack.getCount(),MAX_ZYN_AMOUNT);
+               otherStack.decrement(count - zyn_amount);
+               stack.set(ZYN_AMOUNT_COMP,count);
+            }else if(clickType == ClickType.RIGHT){
+                otherStack.decrement(1);
+                stack.set(ZYN_AMOUNT_COMP,zyn_amount + 1);
+            }
+            return true;
     }
 }
