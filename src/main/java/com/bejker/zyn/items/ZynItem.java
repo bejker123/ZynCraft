@@ -56,7 +56,7 @@ public class ZynItem extends Item {
         source.sendFeedback(() -> Text.literal("Set nicotine for ")
         .append(
         Text.literal(player.getName().getLiteralString()).formatted(Formatting.AQUA))
-                .append(Text.literal(" to: "))
+                .append(Text.literal(" to "))
                 .append(Text.of(String.valueOf(value).formatted(Formatting.GOLD))), false);
 
     }
