@@ -1,18 +1,16 @@
 package com.bejker.zyn;
 
+import com.bejker.zyn.commands.ResetNicotineCommand;
+import com.bejker.zyn.commands.SetNicotineCommand;
+import com.bejker.zyn.commands.ZynCraftCommands;
 import com.bejker.zyn.items.ZynCraftItems;
 import com.bejker.zyn.network.SyncInventoryPacket;
 import com.bejker.zyn.network.ZynCraftPackets;
-import com.mojang.brigadier.Command;
-import com.mojang.brigadier.arguments.IntegerArgumentType;
-import com.mojang.brigadier.arguments.StringArgumentType;
 import net.fabricmc.api.ModInitializer;
 
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
-import net.minecraft.command.CommandExecutionContext;
 import net.minecraft.command.argument.EntityArgumentType;
-import net.minecraft.command.suggestion.SuggestionProviders;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.command.ServerCommandSource;
@@ -53,7 +51,7 @@ public class ZynCraft implements ModInitializer {
 		return ZynabbleItems.contains(stack.getItem());
 	}
 
-	void reset_nicotine(ServerCommandSource source, ServerPlayerEntity player){
+	public static void reset_nicotine(ServerCommandSource source, ServerPlayerEntity player){
 		set_nicotine(source,player,0);
 	}
 
@@ -64,68 +62,11 @@ public class ZynCraft implements ModInitializer {
 		// Proceed with mild caution.
 		ZynCraftItems.initialize();
 		PayloadTypeRegistry.playS2C().register(ZynCraftPackets.SYNC_INVENTORY, SyncInventoryPacket.CODEC);
-		CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> dispatcher.register(
-		literal("reset_nicotine")
-		.requires(source -> source.hasPermissionLevel(2))
-		.executes(context ->{
-			if(context.getSource().getEntity() instanceof ServerPlayerEntity){
-					reset_nicotine(context.getSource(), Objects.requireNonNull(context.getSource().getPlayer()));
-				return 1;
-			}else{
-				context.getSource().sendFeedback(
-						() -> Text.literal("Try calling as a player or adding an argument.")
-							.formatted(Formatting.RED), false);
-				return 0;
-			}
-		})
-		.then(argument("player", EntityArgumentType.player())
-			.executes(context -> {
-				final ServerPlayerEntity player = EntityArgumentType.getPlayer(context, "player");
-				if(player == null){
-					context.getSource().sendFeedback(
-							() -> Text.literal("Failed to find player!")
-								.formatted(Formatting.RED), false);
-					return 0;
-				}
-                reset_nicotine(context.getSource(),player);
-				return 1;
-			}))
-		));
 
-		CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> dispatcher.register(
-		literal("set_nicotine")
-				.requires(source -> source.hasPermissionLevel(2))
-				.then(argument("value",IntegerArgumentType.integer(0))
-				.executes(context ->{
-					final int value = IntegerArgumentType.getInteger(context,"value");
-					if(context.getSource().getEntity() instanceof ServerPlayerEntity){
-						set_nicotine(context.getSource(), Objects.requireNonNull(context.getSource().getPlayer()),value);
-						return 1;
-					}else{
-						context.getSource().sendFeedback(
-								() -> Text.literal("Try calling as a player or adding an argument.")
-										.formatted(Formatting.RED), false);
-						return 0;
-					}
-				})
-				.then(argument("player", EntityArgumentType.player())
-				.executes(context -> {
-					final int value = IntegerArgumentType.getInteger(context,"value");
-					final ServerPlayerEntity player = EntityArgumentType.getPlayer(context, "player");
-					if(player == null){
-						context.getSource().sendFeedback(
-								() -> Text.literal("Failed to find player!")
-										.formatted(Formatting.RED), false);
-						return 0;
-					}
-					set_nicotine(context.getSource(),player,value);
-					return 1;
-				}))
-				)
-		));
+		ZynCraftCommands.initialize();
 	}
 
-	private void set_nicotine(ServerCommandSource source, ServerPlayerEntity player,int value) {
+	public static void set_nicotine(ServerCommandSource source, ServerPlayerEntity player, int value) {
 		player.setAttached(NICOTINE_CONTENT,value);
 		source.sendFeedback(() -> Text.literal("Set nicotine for ")
 		.append(
