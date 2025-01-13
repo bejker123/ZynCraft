@@ -1,16 +1,10 @@
 package com.bejker.zyn;
 
-import com.bejker.zyn.commands.ResetNicotineCommand;
-import com.bejker.zyn.commands.SetNicotineCommand;
 import com.bejker.zyn.commands.ZynCraftCommands;
 import com.bejker.zyn.items.ZynCraftItems;
-import com.bejker.zyn.network.SyncInventoryPacket;
 import com.bejker.zyn.network.ZynCraftPackets;
 import net.fabricmc.api.ModInitializer;
 
-import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
-import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
-import net.minecraft.command.argument.EntityArgumentType;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.command.ServerCommandSource;
@@ -22,11 +16,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
 
 import static com.bejker.zyn.items.ZynItem.NICOTINE_CONTENT;
-import static net.minecraft.server.command.CommandManager.*;
 
 public class ZynCraft implements ModInitializer {
 	public static final String MOD_ID = "zyncraft";
