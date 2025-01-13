@@ -14,8 +14,8 @@
     - Simply right-click a zyn while holding it in your hand.
 - > Commands
     - set_nicotine \<value> \[\<player>\] - set nicotine to the value for player/self
-    - get_nicotine [\<player>] - get nicotine for player/self
-    - reset_nicotine \[\<player>\] - set nicotine to 0 for player/self
+    - get_nicotine [\<player\>] - get nicotine for player/self
+    - reset_nicotine \[\<player\>] - set nicotine to 0 for player/self
 ### Now in Alpha!
 **Expect some issues and bugs as well as incomplete features.**
 
