@@ -39,9 +39,6 @@ public class ZynItem extends Item {
     public static final int ZYN_SLOT = 45;
     public static Set<Item> ZynabbleItems = new HashSet<>();
 
-    static{
-        ZynabbleItems.add(ZYN);
-    }
 
     public static boolean canBePlacedInZynSlot(ItemStack stack){
         return ZynabbleItems.contains(stack.getItem());

@@ -23,6 +23,10 @@ public class ZynCraftItems {
             ZYN_ID
     );
 
+    static{
+        ZynItem.ZynabbleItems.add(ZYN);
+    }
+
     public static final Identifier ZYN_PACK_ID = ZynCraft.id("zyn_pack");
     public static final RegistryKey<Item> ZYN_PACK_KEY = RegistryKey.of(RegistryKeys.ITEM,ZYN_PACK_ID);
 
