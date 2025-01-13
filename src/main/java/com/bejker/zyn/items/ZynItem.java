@@ -51,13 +51,17 @@ public class ZynItem extends Item {
         set_nicotine(source,player,0);
     }
 
+    public static int get_nicotine(ServerPlayerEntity player){
+        return player.getAttached(NICOTINE_CONTENT);
+    }
+
     public static void set_nicotine(ServerCommandSource source, ServerPlayerEntity player, int value) {
         player.setAttached(NICOTINE_CONTENT,value);
         source.sendFeedback(() -> Text.literal("Set nicotine for ")
         .append(
         Text.literal(player.getName().getLiteralString()).formatted(Formatting.AQUA))
                 .append(Text.literal(" to "))
-                .append(Text.of(String.valueOf(value).formatted(Formatting.GOLD))), false);
+                .append(Text.of(String.valueOf(value)).copy().formatted(Formatting.GOLD)), false);
 
     }
 
