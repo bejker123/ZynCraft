@@ -53,15 +53,8 @@ public class ZynCraft implements ModInitializer {
 		return ZynabbleItems.contains(stack.getItem());
 	}
 
-	Command<ServerCommandSource> command = context -> {
-		return 0;
-	};
-
 	void reset_nicotine(ServerCommandSource source, ServerPlayerEntity player){
-		player.setAttached(NICOTINE_CONTENT,0);
-		source.sendFeedback(() -> Text.literal("Reset nicotine for ")
-		.append(
-		Text.literal(player.getName().getLiteralString()).formatted(Formatting.AQUA)), false);
+		set_nicotine(source,player,0);
 	}
 
 	@Override
@@ -98,5 +91,47 @@ public class ZynCraft implements ModInitializer {
 				return 1;
 			}))
 		));
+
+		CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> dispatcher.register(
+		literal("set_nicotine")
+				.requires(source -> source.hasPermissionLevel(2))
+				.then(argument("value",IntegerArgumentType.integer(0))
+				.executes(context ->{
+					final int value = IntegerArgumentType.getInteger(context,"value");
+					if(context.getSource().getEntity() instanceof ServerPlayerEntity){
+						set_nicotine(context.getSource(), Objects.requireNonNull(context.getSource().getPlayer()),value);
+						return 1;
+					}else{
+						context.getSource().sendFeedback(
+								() -> Text.literal("Try calling as a player or adding an argument.")
+										.formatted(Formatting.RED), false);
+						return 0;
+					}
+				})
+				.then(argument("player", EntityArgumentType.player())
+				.executes(context -> {
+					final int value = IntegerArgumentType.getInteger(context,"value");
+					final ServerPlayerEntity player = EntityArgumentType.getPlayer(context, "player");
+					if(player == null){
+						context.getSource().sendFeedback(
+								() -> Text.literal("Failed to find player!")
+										.formatted(Formatting.RED), false);
+						return 0;
+					}
+					set_nicotine(context.getSource(),player,value);
+					return 1;
+				}))
+				)
+		));
+	}
+
+	private void set_nicotine(ServerCommandSource source, ServerPlayerEntity player,int value) {
+		player.setAttached(NICOTINE_CONTENT,value);
+		source.sendFeedback(() -> Text.literal("Set nicotine for ")
+		.append(
+		Text.literal(player.getName().getLiteralString()).formatted(Formatting.AQUA))
+				.append(Text.literal(" to: "))
+				.append(Text.of(String.valueOf(value).formatted(Formatting.GOLD))), false);
+
 	}
 }
