@@ -76,22 +76,22 @@ public class ZynCraft implements ModInitializer {
 		.requires(source -> source.hasPermissionLevel(2))
 		.executes(context ->{
 			if(context.getSource().getEntity() instanceof ServerPlayerEntity){
-				context.getSource().sendFeedback(() -> Text.literal("Called /reset_nicotine with no arguments"), false);
-				reset_nicotine(context.getSource(), Objects.requireNonNull(context.getSource().getPlayer()));
+					reset_nicotine(context.getSource(), Objects.requireNonNull(context.getSource().getPlayer()));
 				return 1;
 			}else{
-				context.getSource().sendFeedback(() -> Text.literal("Try calling as a player or adding an argument."), false);
+				context.getSource().sendFeedback(
+						() -> Text.literal("Try calling as a player or adding an argument.")
+							.formatted(Formatting.RED), false);
 				return 0;
 			}
-			//return 1;
 		})
 		.then(argument("player", EntityArgumentType.player())
 			.executes(context -> {
-				// For versions below 1.19, replace "Text.literal" with "new LiteralText".
-				// For versions below 1.20, remode "() ->" directly.
 				final ServerPlayerEntity player = EntityArgumentType.getPlayer(context, "player");
 				if(player == null){
-					context.getSource().sendFeedback(() -> Text.literal("Failed to find player!"), false);
+					context.getSource().sendFeedback(
+							() -> Text.literal("Failed to find player!")
+								.formatted(Formatting.RED), false);
 					return 0;
 				}
                 reset_nicotine(context.getSource(),player);
