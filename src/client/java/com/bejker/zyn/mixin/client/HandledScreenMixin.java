@@ -6,7 +6,6 @@ import com.bejker.zyn.inventory.ZynInventory;
 import com.bejker.zyn.inventory.ZynSlot;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
-import net.minecraft.client.render.RenderLayer;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.screen.slot.SlotActionType;
 import org.spongepowered.asm.mixin.Mixin;
@@ -17,7 +16,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import static com.bejker.zyn.ZynCraft.ZYN_SLOT;
+import static com.bejker.zyn.items.ZynItem.ZYN_SLOT;
 
 @Mixin(HandledScreen.class)
 public abstract class HandledScreenMixin {

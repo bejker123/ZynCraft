@@ -5,20 +5,9 @@ import com.bejker.zyn.items.ZynCraftItems;
 import com.bejker.zyn.network.ZynCraftPackets;
 import net.fabricmc.api.ModInitializer;
 
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.server.command.ServerCommandSource;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.HashSet;
-import java.util.Set;
-
-import static com.bejker.zyn.items.ZynItem.NICOTINE_CONTENT;
 
 public class ZynCraft implements ModInitializer {
 	public static final String MOD_ID = "zyncraft";
@@ -28,23 +17,8 @@ public class ZynCraft implements ModInitializer {
 	// That way, it's clear which mod wrote info, warnings, and errors.
 	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 
-	public static final int ZYN_SLOT = 45;
-
 	public static Identifier id(String id) {
 		return Identifier.of(MOD_ID,id);
-	}
-
-	public static Set<Item> ZynabbleItems = new HashSet<>();
-
-	static{
-		ZynabbleItems.add(ZynCraftItems.ZYN);
-	}
-	public static boolean canBePlacedInZynSlot(ItemStack stack){
-		return ZynabbleItems.contains(stack.getItem());
-	}
-
-	public static void reset_nicotine(ServerCommandSource source, ServerPlayerEntity player){
-		set_nicotine(source,player,0);
 	}
 
 	@Override
@@ -54,13 +28,4 @@ public class ZynCraft implements ModInitializer {
 		ZynCraftCommands.initialize();
 	}
 
-	public static void set_nicotine(ServerCommandSource source, ServerPlayerEntity player, int value) {
-		player.setAttached(NICOTINE_CONTENT,value);
-		source.sendFeedback(() -> Text.literal("Set nicotine for ")
-		.append(
-		Text.literal(player.getName().getLiteralString()).formatted(Formatting.AQUA))
-				.append(Text.literal(" to: "))
-				.append(Text.of(String.valueOf(value).formatted(Formatting.GOLD))), false);
-
-	}
 }

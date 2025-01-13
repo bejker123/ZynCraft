@@ -20,7 +20,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import static com.bejker.zyn.ZynCraft.ZYN_SLOT;
+import static com.bejker.zyn.items.ZynItem.ZYN_SLOT;
 
 @Mixin(PlayerInventory.class)
 public class PlayerInventoryMixin implements ZynInventory {

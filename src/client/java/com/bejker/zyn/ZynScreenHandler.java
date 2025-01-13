@@ -1,5 +1,6 @@
 package com.bejker.zyn;
 
+import com.bejker.zyn.items.ZynItem;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
@@ -20,7 +21,7 @@ public class ZynScreenHandler {
         context.getMatrices().push();
         context.getMatrices().translate(x, y, 1.0f);
         context.drawTexture(RenderLayer::getGuiTextured,SLOT_TEXTURE,0,0,0,0,20,20,20,20);
-        if(focused_slot != null&&focused_slot.id == ZynCraft.ZYN_SLOT){
+        if(focused_slot != null&&focused_slot.id == ZynItem.ZYN_SLOT){
             x = -2;
             y = -2;
             context.drawGuiTexture(RenderLayer::getGuiTexturedOverlay, SLOT_HIGHLIGHT_FRONT_TEXTURE, x, y, 24, 24);

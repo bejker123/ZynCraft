@@ -1,6 +1,6 @@
 package com.bejker.zyn.commands;
 
-import com.bejker.zyn.ZynCraft;
+import com.bejker.zyn.items.ZynItem;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.minecraft.command.argument.EntityArgumentType;
@@ -22,7 +22,7 @@ public class SetNicotineCommand {
                                 .executes(context ->{
                                     final int value = IntegerArgumentType.getInteger(context,"value");
                                     if(context.getSource().getEntity() instanceof ServerPlayerEntity){
-                                        ZynCraft.set_nicotine(context.getSource(), Objects.requireNonNull(context.getSource().getPlayer()),value);
+                                        ZynItem.set_nicotine(context.getSource(), Objects.requireNonNull(context.getSource().getPlayer()),value);
                                         return 1;
                                     }else{
                                         context.getSource().sendFeedback(
@@ -41,7 +41,7 @@ public class SetNicotineCommand {
                                                                 .formatted(Formatting.RED), false);
                                                 return 0;
                                             }
-                                            ZynCraft.set_nicotine(context.getSource(),player,value);
+                                            ZynItem.set_nicotine(context.getSource(),player,value);
                                             return 1;
                                         }))
                         )

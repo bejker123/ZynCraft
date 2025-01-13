@@ -18,18 +18,48 @@ import net.minecraft.nbt.NbtInt;
 import net.minecraft.network.codec.PacketCodecs;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
+import net.minecraft.server.command.ServerCommandSource;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.Colors;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.Rarity;
 import net.minecraft.util.dynamic.Codecs;
 import net.minecraft.world.World;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static com.bejker.zyn.items.ZynCraftItems.ZYN;
 import static com.bejker.zyn.items.ZynCraftItems.ZYN_KEY;
 
 public class ZynItem extends Item {
+
+    public static final int ZYN_SLOT = 45;
+    public static Set<Item> ZynabbleItems = new HashSet<>();
+
+    static{
+        ZynabbleItems.add(ZYN);
+    }
+
+    public static boolean canBePlacedInZynSlot(ItemStack stack){
+        return ZynabbleItems.contains(stack.getItem());
+    }
+
+    public static void reset_nicotine(ServerCommandSource source, ServerPlayerEntity player){
+        set_nicotine(source,player,0);
+    }
+
+    public static void set_nicotine(ServerCommandSource source, ServerPlayerEntity player, int value) {
+        player.setAttached(NICOTINE_CONTENT,value);
+        source.sendFeedback(() -> Text.literal("Set nicotine for ")
+        .append(
+        Text.literal(player.getName().getLiteralString()).formatted(Formatting.AQUA))
+                .append(Text.literal(" to: "))
+                .append(Text.of(String.valueOf(value).formatted(Formatting.GOLD))), false);
+
+    }
 
     public enum ZynType{
         CITRUS;
@@ -98,7 +128,7 @@ public class ZynItem extends Item {
 
     @Override
     public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
-        if(slot != ZynCraft.ZYN_SLOT){
+        if(slot != ZYN_SLOT){
             return;
         }
         Integer strength = stack.get(ZYN_STRENGTH);

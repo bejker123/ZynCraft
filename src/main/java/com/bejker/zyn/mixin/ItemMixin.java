@@ -1,12 +1,9 @@
 package com.bejker.zyn.mixin;
 
-import com.bejker.zyn.ZynCraft;
 import com.bejker.zyn.inventory.ZynInventory;
+import com.bejker.zyn.items.ZynItem;
 import com.bejker.zyn.network.SyncInventoryPacket;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
-import net.minecraft.component.DataComponentTypes;
-import net.minecraft.component.type.ConsumableComponent;
-import net.minecraft.component.type.EquippableComponent;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -28,7 +25,7 @@ public class ItemMixin {
     public void use(World world, PlayerEntity user, Hand hand, CallbackInfoReturnable<ActionResult> cir) {
         if(user instanceof ServerPlayerEntity player){
             ItemStack stack = user.getStackInHand(hand);
-            if(!ZynCraft.canBePlacedInZynSlot(stack)){
+            if(!ZynItem.canBePlacedInZynSlot(stack)){
                 return;
             }
             ZynInventory inventory = ((ZynInventory) player.getInventory());
@@ -42,7 +39,7 @@ public class ItemMixin {
             cir.setReturnValue(ActionResult.SUCCESS);
             player.getInventory().markDirty();
             inventory.zynCraft$getZynSlot().insertStack(stack_cp,1);
-            ServerPlayNetworking.send(player, new SyncInventoryPacket(player.getId(), Map.of(ZynCraft.ZYN_SLOT,stack_cp),Map.of()));
+            ServerPlayNetworking.send(player, new SyncInventoryPacket(player.getId(), Map.of(ZynItem.ZYN_SLOT,stack_cp),Map.of()));
         }
 
     }

@@ -9,7 +9,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 
-import static com.bejker.zyn.ZynCraft.canBePlacedInZynSlot;
+import static com.bejker.zyn.items.ZynItem.canBePlacedInZynSlot;
 
 public class ZynSlot extends Slot {
     public ZynSlot(Inventory inventory, int index, int x, int y) {

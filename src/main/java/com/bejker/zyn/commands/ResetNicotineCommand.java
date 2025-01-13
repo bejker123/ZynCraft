@@ -1,6 +1,6 @@
 package com.bejker.zyn.commands;
 
-import com.bejker.zyn.ZynCraft;
+import com.bejker.zyn.items.ZynItem;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.minecraft.command.argument.EntityArgumentType;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -20,7 +20,7 @@ public class ResetNicotineCommand {
                         .requires(source -> source.hasPermissionLevel(2))
                         .executes(context ->{
                             if(context.getSource().getEntity() instanceof ServerPlayerEntity){
-                                ZynCraft.reset_nicotine(context.getSource(), Objects.requireNonNull(context.getSource().getPlayer()));
+                                ZynItem.reset_nicotine(context.getSource(), Objects.requireNonNull(context.getSource().getPlayer()));
                                 return 1;
                             }else{
                                 context.getSource().sendFeedback(
@@ -38,7 +38,7 @@ public class ResetNicotineCommand {
                                                         .formatted(Formatting.RED), false);
                                         return 0;
                                     }
-                                    ZynCraft.reset_nicotine(context.getSource(),player);
+                                    ZynItem.reset_nicotine(context.getSource(),player);
                                     return 1;
                                 }))
         ));

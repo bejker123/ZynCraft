@@ -1,7 +1,6 @@
 package com.bejker.zyn.items;
 
 import com.bejker.zyn.ZynCraft;
-import com.mojang.serialization.Codec;
 import net.minecraft.component.ComponentType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.StackReference;
@@ -9,7 +8,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.item.tooltip.TooltipType;
-import net.minecraft.network.codec.PacketCodecs;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.screen.slot.Slot;
@@ -124,7 +122,7 @@ public class ZynPackItem extends Item {
             if (zyn_amount == null||otherStack.isDamaged()) {
                 return super.onClicked(stack, otherStack, slot, clickType, player, cursorStackReference);
             }
-            if(!ZynCraft.canBePlacedInZynSlot(otherStack)){
+            if(!ZynItem.canBePlacedInZynSlot(otherStack)){
                 if(otherStack.getItem() == Items.AIR &&clickType == ClickType.RIGHT&&zyn_amount > 0){
                     ItemStack cursor_stack = PackItemStackToZynItemStack(stack);
                     cursor_stack.setCount(1);
