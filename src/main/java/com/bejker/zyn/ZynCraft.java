@@ -57,12 +57,8 @@ public class ZynCraft implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
-		// This code runs as soon as Minecraft is in a mod-load-ready state.
-		// However, some things (like resources) may still be uninitialized.
-		// Proceed with mild caution.
 		ZynCraftItems.initialize();
-		PayloadTypeRegistry.playS2C().register(ZynCraftPackets.SYNC_INVENTORY, SyncInventoryPacket.CODEC);
-
+		ZynCraftPackets.initialize();
 		ZynCraftCommands.initialize();
 	}
 
