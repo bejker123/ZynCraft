@@ -1,18 +1,26 @@
 package com.bejker.zyn.items;
 
 import com.bejker.zyn.ZynCraftComponents;
+import net.minecraft.advancement.criterion.Criteria;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
+import net.minecraft.component.DataComponentTypes;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.StackReference;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
+import net.minecraft.item.*;
 import net.minecraft.item.tooltip.TooltipType;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.world.ServerWorld;
+import net.minecraft.sound.BlockSoundGroup;
+import net.minecraft.sound.SoundCategory;
 import net.minecraft.text.Text;
 import net.minecraft.util.*;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
+import net.minecraft.world.event.GameEvent;
 
 import java.util.List;
 import java.util.Objects;
@@ -134,5 +142,60 @@ public class ZynPackItem extends Item {
                 stack.set(ZynCraftComponents.ZYN_AMOUNT_COMP,zyn_amount + 1);
             }
             return true;
+    }
+
+    @Override
+    public ActionResult useOnBlock(ItemUsageContext context) {
+        ActionResult actionResult = this.place(new ItemPlacementContext(context));
+        return !actionResult.isAccepted() && context.getStack().contains(DataComponentTypes.CONSUMABLE) ? super.use(context.getWorld(), context.getPlayer(), context.getHand()) : actionResult;
+    }
+
+    protected boolean place(ItemPlacementContext context, BlockState state) {
+        return context.getWorld().setBlockState(context.getBlockPos(), state, 11);
+    }
+    public ActionResult place(ItemPlacementContext context) {
+        //if (!this.getBlock().isEnabled(context.getWorld().getEnabledFeatures())) {
+        //    return ActionResult.FAIL;
+        //} else if (!context.canPlace()) {
+        //    return ActionResult.FAIL;
+        //} else {
+        //    ItemPlacementContext itemPlacementContext = this.getPlacementContext(context);
+        //    if (itemPlacementContext == null) {
+        //        return ActionResult.FAIL;
+        //    } else {
+        //        BlockState blockState = this.getPlacementState(itemPlacementContext);
+        //        if (blockState == null) {
+        //            return ActionResult.FAIL;
+        //        } else if (!this.place(itemPlacementContext, blockState)) {
+        //            return ActionResult.FAIL;
+        //        } else {
+        //            BlockPos blockPos = itemPlacementContext.getBlockPos();
+        //            World world = itemPlacementContext.getWorld();
+        //            PlayerEntity playerEntity = itemPlacementContext.getPlayer();
+        //            ItemStack itemStack = itemPlacementContext.getStack();
+        //            BlockState blockState2 = world.getBlockState(blockPos);
+        //            if (blockState2.isOf(blockState.getBlock())) {
+        //                blockState2 = this.placeFromNbt(blockPos, world, itemStack, blockState2);
+        //                this.postPlacement(blockPos, world, playerEntity, itemStack, blockState2);
+        //                copyComponentsToBlockEntity(world, blockPos, itemStack);
+        //                blockState2.getBlock().onPlaced(world, blockPos, blockState2, playerEntity, itemStack);
+        //                if (playerEntity instanceof ServerPlayerEntity) {
+        //                    Criteria.PLACED_BLOCK.trigger((ServerPlayerEntity)playerEntity, blockPos, itemStack);
+        //                }
+        //            }
+
+        //            BlockSoundGroup blockSoundGroup = blockState2.getSoundGroup();
+        //            world.playSound(playerEntity, blockPos, this.getPlaceSound(blockState2), SoundCategory.BLOCKS, (blockSoundGroup.getVolume() + 1.0F) / 2.0F, blockSoundGroup.getPitch() * 0.8F);
+        //            world.emitGameEvent(GameEvent.BLOCK_PLACE, blockPos, GameEvent.Emitter.of(playerEntity, blockState2));
+        //            itemStack.decrementUnlessCreative(1, playerEntity);
+        //            return ActionResult.SUCCESS;
+        //        }
+        //    }
+        //}
+        return ActionResult.PASS;
+    }
+
+    private Block getBlock() {
+        return Blocks.DIRT;
     }
 }

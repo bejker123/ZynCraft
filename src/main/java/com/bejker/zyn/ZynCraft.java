@@ -1,5 +1,6 @@
 package com.bejker.zyn;
 
+import com.bejker.zyn.blocks.ZynCraftBlocks;
 import com.bejker.zyn.commands.ZynCraftCommands;
 import com.bejker.zyn.items.ZynCraftItems;
 import com.bejker.zyn.network.ZynCraftPackets;
@@ -23,6 +24,7 @@ public class ZynCraft implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
+		ZynCraftBlocks.initialize();
 		ZynCraftItems.initialize();
 		ZynCraftPackets.initialize();
 		ZynCraftCommands.initialize();
