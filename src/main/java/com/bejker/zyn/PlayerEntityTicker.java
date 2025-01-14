@@ -8,7 +8,7 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 
-import static com.bejker.zyn.items.ZynItem.NICOTINE_CONTENT;
+import static com.bejker.zyn.ZynCraftComponents.NICOTINE_CONTENT;
 
 //TODO: implement for other entities
 public class PlayerEntityTicker {
