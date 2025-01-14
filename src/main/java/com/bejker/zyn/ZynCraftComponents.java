@@ -19,19 +19,20 @@ public class ZynCraftComponents {
     //In ticks = 5min = 20 ticks/sec * 300sec = 6000 ticks
     public static final int MAX_ZYN_DURABILITY = 6_000;
     public static final int MAX_ZYN_COUNT = 1;
-    public static final ComponentType<ZynItem.ZynType> ZYN_TYPE = Registry.register(Registries.DATA_COMPONENT_TYPE,ZynCraft.id("zyn_type"),
-            ComponentType.<ZynItem.ZynType>builder().codec(new Codec<ZynItem.ZynType>() {
+    public static final ComponentType<ZynType> ZYN_TYPE = Registry.register(Registries.DATA_COMPONENT_TYPE,ZynCraft.id("zyn_type"),
+            ComponentType.<ZynType>builder().codec(new Codec<ZynType>() {
                 @Override
-                public <T> DataResult<T> encode(ZynItem.ZynType zynType, DynamicOps<T> dynamicOps, T t) {
+                public <T> DataResult<T> encode(ZynType zynType, DynamicOps<T> dynamicOps, T t) {
+                    //TODO: fix this
                     dynamicOps.createInt(zynType.ordinal());
                     return DataResult.success(t);
                 }
 
                 @Override
-                public <T> DataResult<Pair<ZynItem.ZynType, T>> decode(DynamicOps<T> dynamicOps, T t) {
+                public <T> DataResult<Pair<ZynType, T>> decode(DynamicOps<T> dynamicOps, T t) {
                     try {
                         int i = ((NbtInt) t).intValue();
-                        return DataResult.success(Pair.of(ZynItem.ZynType.from(i), t));
+                        return DataResult.success(Pair.of(ZynType.from(i), t));
                     } catch (Exception e) {
                         return DataResult.error(() -> "Failed to decode zyn type.");
                     }
@@ -47,4 +48,21 @@ public class ZynCraftComponents {
     public static final ComponentType<Integer> ZYN_AMOUNT_COMP = Registry.register(Registries.DATA_COMPONENT_TYPE, ZynCraft.id("zyn_amount")
             ,ComponentType.<Integer>builder().codec(Codecs.NON_NEGATIVE_INT).build());
     public static final int MAX_ZYN_AMOUNT = 20;
+    //In mg
+    public static final ComponentType<Integer> ZYN_STRENGTH = Registry.register(Registries.DATA_COMPONENT_TYPE, ZynCraft.id("zyn_strength")
+            ,ComponentType.<Integer>builder().codec(Codecs.POSITIVE_INT).build());
+
+    public enum ZynType{
+        CITRUS,
+        MINT;
+
+        public static ZynType from(int value) {
+            for (var i : ZynType.values()){
+                if(i.ordinal() == value){
+                    return i;
+                }
+            }
+            return ZynType.CITRUS;
+        }
+    }
 }

@@ -1,22 +1,17 @@
 package com.bejker.zyn.items;
 
-import com.bejker.zyn.ZynCraft;
 import com.bejker.zyn.ZynCraftComponents;
-import net.minecraft.component.ComponentType;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.tooltip.TooltipType;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.Colors;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Rarity;
-import net.minecraft.util.dynamic.Codecs;
 import net.minecraft.world.World;
 
 import java.util.HashSet;
@@ -54,38 +49,27 @@ public class ZynItem extends Item {
 
     }
 
-    public enum ZynType{
-        CITRUS;
-
-        public static ZynType from(int value) {
-            return ZynType.CITRUS;
-        }
-    }
-
-    //In mg
-    public static final ComponentType<Integer> ZYN_STRENGTH = Registry.register(Registries.DATA_COMPONENT_TYPE, ZynCraft.id("zyn_strength")
-            ,ComponentType.<Integer>builder().codec(Codecs.POSITIVE_INT).build());
     public static final Item.Settings ZynItemSettings = new Item.Settings()
             .registryKey(ZYN_KEY)
             .useItemPrefixedTranslationKey()
             .maxCount(ZynCraftComponents.MAX_ZYN_COUNT)
             .maxDamage(ZynCraftComponents.MAX_ZYN_DURABILITY)
-            .component(ZYN_STRENGTH,10)
-            .component(ZynCraftComponents.ZYN_TYPE,ZynType.CITRUS)
+            .component(ZynCraftComponents.ZYN_STRENGTH,10)
+            .component(ZynCraftComponents.ZYN_TYPE, ZynCraftComponents.ZynType.CITRUS)
             .rarity(Rarity.RARE);
     public ZynItem(Settings settings) {
         super(settings);
     }
 
-    public ItemStack itemStackFrom(int zynStrength,ZynType type){
+    public ItemStack itemStackFrom(int zynStrength, ZynCraftComponents.ZynType type){
         ItemStack stack =  super.getDefaultStack();
-        stack.set(ZYN_STRENGTH,zynStrength);
+        stack.set(ZynCraftComponents.ZYN_STRENGTH,zynStrength);
         stack.set(ZynCraftComponents.ZYN_TYPE,type);
         return stack;
     }
     @Override
     public ItemStack getDefaultStack() {
-        return ZYN.itemStackFrom(10,ZynType.CITRUS);
+        return ZYN.itemStackFrom(10, ZynCraftComponents.ZynType.CITRUS);
     }
 
     @Override
@@ -93,7 +77,7 @@ public class ZynItem extends Item {
         if(slot != ZYN_SLOT){
             return;
         }
-        Integer strength = stack.get(ZYN_STRENGTH);
+        Integer strength = stack.get(ZynCraftComponents.ZYN_STRENGTH);
         if(strength == null){
             return;
         }
@@ -119,8 +103,8 @@ public class ZynItem extends Item {
 
     @Override
     public void appendTooltip(ItemStack stack, TooltipContext context, List<Text> tooltip, TooltipType type) {
-        tooltip.add(Text.literal(stack.getOrDefault(ZynCraftComponents.ZYN_TYPE,ZynType.CITRUS).toString()).withColor(Colors.ALTERNATE_WHITE));
-        tooltip.add(Text.literal(stack.getOrDefault(ZYN_STRENGTH,0).toString()).withColor(Colors.CYAN)
+        tooltip.add(Text.literal(stack.getOrDefault(ZynCraftComponents.ZYN_TYPE, ZynCraftComponents.ZynType.CITRUS).toString()).withColor(Colors.ALTERNATE_WHITE));
+        tooltip.add(Text.literal(stack.getOrDefault(ZynCraftComponents.ZYN_STRENGTH,0).toString()).withColor(Colors.CYAN)
                 .append(Text.literal("mg").withColor(Colors.YELLOW)));
     }
 }
