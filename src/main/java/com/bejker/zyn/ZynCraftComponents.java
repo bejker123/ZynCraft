@@ -23,7 +23,7 @@ public class ZynCraftComponents {
             ComponentType.<ZynType>builder().codec(new Codec<ZynType>() {
                 @Override
                 public <T> DataResult<T> encode(ZynType zynType, DynamicOps<T> dynamicOps, T t) {
-                    //TODO: fix this
+                    //FIXME
                     dynamicOps.createInt(zynType.ordinal());
                     return DataResult.success(t);
                 }
