@@ -51,7 +51,13 @@ public class ZynPackItem extends Item {
             amount = 0;
         }
         ZYN.appendTooltip(stack,context,tooltip,type);
-        tooltip.add(Text.literal(amount+"/"+ ZynCraftComponents.MAX_ZYN_AMOUNT).withColor(Colors.GRAY));
+        int color = this.getItemBarColor(stack);
+        tooltip.add(Text.literal(amount.toString()).withColor(color)
+                .append(Text.literal("/").copy().withColor(Colors.ALTERNATE_WHITE))
+                .append(Text.literal(String.valueOf(ZynCraftComponents.MAX_ZYN_AMOUNT))
+                        .withColor(Colors.GREEN)));
+        //tooltip.add(
+        //        Text.literal(amount+"/"+ ZynCraftComponents.MAX_ZYN_AMOUNT).withColor(this.getItemBarColor(stack)));
         super.appendTooltip(stack, context, tooltip, type);
         //for (var i : stack.getComponents()){
         //    tooltip.add(Text.literal(i.toString()));

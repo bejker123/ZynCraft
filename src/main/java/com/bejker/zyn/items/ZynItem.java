@@ -103,7 +103,7 @@ public class ZynItem extends Item {
 
     @Override
     public void appendTooltip(ItemStack stack, TooltipContext context, List<Text> tooltip, TooltipType type) {
-        tooltip.add(Text.literal(stack.getOrDefault(ZynCraftComponents.ZYN_TYPE, ZynCraftComponents.ZynType.CITRUS).toString()).withColor(Colors.ALTERNATE_WHITE));
+        tooltip.add(Text.literal(stack.getOrDefault(ZynCraftComponents.ZYN_TYPE, ZynCraftComponents.ZynType.CITRUS).toString()).withColor(Colors.GREEN));
         tooltip.add(Text.literal(stack.getOrDefault(ZynCraftComponents.ZYN_STRENGTH,0).toString()).withColor(Colors.CYAN)
                 .append(Text.literal("mg").withColor(Colors.YELLOW)));
     }
