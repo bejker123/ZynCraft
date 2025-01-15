@@ -27,7 +27,7 @@ import java.util.Objects;
 
 import static com.bejker.zyn.items.ZynCraftItems.ZYN;
 import static com.bejker.zyn.items.ZynCraftItems.ZYN_PACK_KEY;
-import static com.bejker.zyn.items.ZynItem.ZYN_STRENGTH;
+import static com.bejker.zyn.ZynCraftComponents.ZYN_STRENGTH;
 import static com.bejker.zyn.ZynCraftComponents.ZYN_TYPE;
 
 public class ZynPackItem extends Item {
@@ -37,7 +37,7 @@ public class ZynPackItem extends Item {
             .maxCount(1)
             .component(ZynCraftComponents.ZYN_AMOUNT_COMP, ZynCraftComponents.MAX_ZYN_AMOUNT)
             .component(ZYN_STRENGTH,10)
-            .component(ZYN_TYPE, ZynItem.ZynType.CITRUS)
+            .component(ZYN_TYPE, ZynCraftComponents.ZynType.CITRUS)
             .rarity(Rarity.EPIC);
     public ZynPackItem(Settings settings) {
         super(settings);
@@ -48,7 +48,7 @@ public class ZynPackItem extends Item {
         ItemStack stack = super.getDefaultStack();
         stack.set(ZynCraftComponents.ZYN_AMOUNT_COMP, ZynCraftComponents.MAX_ZYN_AMOUNT);
         stack.set(ZYN_STRENGTH,10);
-        stack.set(ZYN_TYPE, ZynItem.ZynType.CITRUS);
+        stack.set(ZYN_TYPE, ZynCraftComponents.ZynType.CITRUS);
         return stack;
     }
 
@@ -59,7 +59,13 @@ public class ZynPackItem extends Item {
             amount = 0;
         }
         ZYN.appendTooltip(stack,context,tooltip,type);
-        tooltip.add(Text.literal(amount+"/"+ ZynCraftComponents.MAX_ZYN_AMOUNT).withColor(Colors.GRAY));
+        int color = this.getItemBarColor(stack);
+        tooltip.add(Text.literal(amount.toString()).withColor(color)
+                .append(Text.literal("/").copy().withColor(Colors.ALTERNATE_WHITE))
+                .append(Text.literal(String.valueOf(ZynCraftComponents.MAX_ZYN_AMOUNT))
+                        .withColor(Colors.GREEN)));
+        //tooltip.add(
+        //        Text.literal(amount+"/"+ ZynCraftComponents.MAX_ZYN_AMOUNT).withColor(this.getItemBarColor(stack)));
         super.appendTooltip(stack, context, tooltip, type);
         //for (var i : stack.getComponents()){
         //    tooltip.add(Text.literal(i.toString()));
